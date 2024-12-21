@@ -17,17 +17,20 @@ if (session_status() == PHP_SESSION_NONE) {
             <li><a href="index.php">HOME</a></li>
             <li>
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="dashboard.php">DASHBOARD</a>
+                    <a href="dashboardAdmin.php">DASHBOARD</a>
                 <?php else: ?>
                     <a href="login.php">DASHBOARD</a>
                 <?php endif; ?>
             </li>
             <li>
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="price.php">PRICE</a>
+                    <a href="flowersAdmin.php">FLOWERS</a>
                 <?php else: ?>
-                    <a href="login.php">PRICE</a>
+                    <a href="login.php">FLOWERS</a>
                 <?php endif; ?>
+            </li>
+            <li>
+                <a href="add_flower.php">ADD FLOWER</a>
             </li>
             <li>
             <?php if (isset($_SESSION['user_id'])): ?>
@@ -35,6 +38,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 <?php else: ?>
                     <a href="login.php">LOGIN</a></li>
                 <?php endif; ?>
+        
         </ul>
     </nav>
 </body>

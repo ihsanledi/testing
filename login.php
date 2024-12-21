@@ -21,11 +21,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
-        header("Location: dashboard.php"); // Redirect ke halaman selamat datang
+    
+        // Validasi role pengguna
+        if ($_SESSION['role'] === 'customer') {
+            header("Location: dashboardCustomer.php"); // Redirect ke dashboard customer
+        } elseif ($_SESSION['role'] === 'admin') {
+            header("Location: dashboardAdmin.php"); // Redirect ke dashboard admin
+        } else {
+            // Jika role tidak dikenali, arahkan ke halaman default atau error
+            header("Location: unknownRole.php");
+        }
         exit();
     } else {
         echo "Email atau password salah!";
     }
+    
 
     // Tutup koneksi setelah digunakan
     closeConnection();
@@ -36,11 +46,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/styles.css"> -->
+    <link rel="stylesheet" type="text/css" href="css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="css/css/bootstrap.min.css">
+
+
 </head>
 <body>
-    <?php require 'navbar.php'?>
-
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.php">HOME</a></li>
+            
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <!-- Jika pengguna adalah admin -->
+                <?php if ($_SESSION['role'] === 'admin'): ?>
+                    <li><a href="dashboardAdmin.php">DASHBOARD</a></li>
+                    <li><a href="flowersAdmin.php">FLOWERS</a></li>
+                <!-- Jika pengguna adalah customer -->
+                <?php elseif ($_SESSION['role'] === 'customer'): ?>
+                    <li><a href="dashboardCustomer.php">DASHBOARD</a></li>
+                    <li><a href="flowersCustomer.php">FLOWERS</a></li>
+                <?php endif; ?>
+                <li><a href="logout.php">LOGOUT</a></li>
+            <?php else: ?>
+                <!-- Jika pengguna belum login -->
+                <li><a href="login.php">LOGIN</a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
 
     <div class="container justify-content-center">
         <h2>Login</h2>

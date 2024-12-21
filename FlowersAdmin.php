@@ -5,19 +5,16 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Connect to database
-$dsn = 'mysql:host=localhost;dbname=your_database';
-$username = 'your_username';
-$password = 'your_password';
-$options = [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-];
+// Include the database connection file
+require_once 'db.php';
 
-try {
-    $pdo = new PDO($dsn, $username, $password, $options);
-} catch (PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
+// Handle delete request
+if (isset($_GET['delete_id'])) {
+    $deleteId = $_GET['delete_id'];
+    $stmt = $pdo->prepare("DELETE FROM flowers WHERE id = :id");
+    $stmt->execute(['id' => $deleteId]);
+    header("Location: price.php");
+    exit();
 }
 
 // Fetch flowers from database
@@ -33,9 +30,20 @@ $flowers = $stmt->fetchAll();
     <title>Bloomris - Produk</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <style>
+        .card {
+            width: 20vw;
+            height: 30vh;
+        }
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body class="bg-secondary">
-    <?php include 'navbar.php'; ?>
+<?php include 'navbarAdmin.php'; ?>
 
     <div class="container mt-4">
         <h1 class="text-center text-white">Produk Unggulan Kami</h1>
@@ -51,8 +59,10 @@ $flowers = $stmt->fetchAll();
                             <p class="card-text">Rp. <?= number_format($flower['price'], 2, ',', '.') ?></p>
                             <p class="card-text text-muted"> <?= htmlspecialchars(substr($flower['description'], 0, 100)) ?>...</p>
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer d-flex justify-content-between">
                             <a href="detail.php?id=<?= $flower['id'] ?>" class="btn btn-primary">Lihat Detail</a>
+                            <a href="edit_flower.php?id=<?= $flower['id'] ?>" class="btn btn-warning">Edit</a>
+                            <a href="price.php?delete_id=<?= $flower['id'] ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?');">Hapus</a>
                         </div>
                     </div>
                 </div>
