@@ -1,0 +1,45 @@
+.navbar {
+    background-color: #333; /* Warna latar belakang navbar */
+    overflow: hidden; /* Pastikan konten tidak meluap */
+}
+
+.navbar ul {
+    list-style-type: none; /* Hapus bullet points pada list */
+    margin: 0; /* Hapus margin */
+    padding: 0; /* Hapus padding */
+    display: flex; /* Buat elemen fleksibel untuk membuat list horizontal */
+    justify-content: center; /* Pusatkan item dalam navbar */
+}
+
+.navbar ul li {
+    flex: 1; /* Setiap item memiliki ukuran fleksibel yang sama */
+}
+
+.navbar ul li a {
+    display: block; /* Buat elemen blok untuk area klik yang lebih besar */
+    color: white; /* Warna teks */
+    text-align: center; /* Pusatkan teks */
+    padding: 14px 20px; /* Spasi dalam elemen */
+    text-decoration: none; /* Hapus garis bawah */
+}
+
+.navbar ul li a:hover {
+    background-color: #575757; /* Warna latar belakang saat hover */
+    color: white; /* Warna teks saat hover */
+}
+
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+    .navbar ul {
+        flex-direction: column; /* Ubah list menjadi vertikal pada layar kecil */
+    }
+
+    .navbar ul li {
+        flex: none; /* Hapus fleksibilitas ukuran */
+    }
+
+    .navbar ul li a {
+        text-align: left; /* Ubah text-align menjadi kiri */
+        padding: 10px 15px; /* Ubah padding untuk tampilan mobile */
+    }
+}
